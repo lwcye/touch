@@ -7,10 +7,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ViewUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.IntentUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.Utils;
 import com.hbln.touch.ui.activity.BrowserActivity;
+import com.hbln.touch.ui.activity.NormalBrowserActivity;
 import com.hbln.touch.ui.widget.vassonic.SonicRuntimeImpl;
 import com.tencent.sonic.sdk.SonicConfig;
 import com.tencent.sonic.sdk.SonicEngine;
@@ -26,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
-
+        ToastUtils.showShort(Utils.getApp().getResources().getDisplayMetrics().widthPixels+ "*" + Utils.getApp().getResources().getDisplayMetrics().heightPixels);
 
         if (hasPermission()) {
             init();
         } else {
             requestPermission();
         }
-
+        IntentUtils.getShutdownIntent();
     }
 
     private void init() {
@@ -42,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
             SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());
         }
 
-        overridePendingTransition(0,0);
+        overridePendingTransition(0, 0);
 
-        Intent intent = new Intent(this, BrowserActivity.class);
-        intent.putExtra(BrowserActivity.PARAM_URL, "file:///android_asset/chumo/index.html");
+        Intent intent = new Intent(this, NormalBrowserActivity.class);
+        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/chumo/index.html");
         startActivity(intent);
         finish();
     }

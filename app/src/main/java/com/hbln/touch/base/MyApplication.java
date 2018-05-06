@@ -21,11 +21,13 @@ import com.blankj.utilcode.util.Utils;
  * @note -
  */
 public class MyApplication extends Application {
+    private static MyApplication myApplication;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Utils.init(this);
-
+        myApplication = this;
         init();
     }
 
@@ -41,5 +43,9 @@ public class MyApplication extends Application {
             CrashUtils.init();
         }
 
+    }
+
+    public static MyApplication getInstance() {
+        return myApplication;
     }
 }

@@ -29,7 +29,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.hbln.touch.R;
-import com.hbln.touch.ui.widget.vassonic.SonicJavaScriptInterface;
 import com.hbln.touch.ui.widget.vassonic.SonicRuntimeImpl;
 import com.hbln.touch.ui.widget.vassonic.SonicSessionClientImpl;
 import com.tencent.sonic.sdk.SonicCacheInterceptor;
@@ -58,14 +57,8 @@ import java.util.Map;
  */
 
 public class BrowserActivity extends Activity {
-
-
     public final static String PARAM_URL = "param_url";
-
-    public final static String PARAM_MODE = "param_mode";
-
     private SonicSession sonicSession;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -79,8 +72,6 @@ public class BrowserActivity extends Activity {
             finish();
             return;
         }
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         // init sonic engine if necessary, or maybe u can do this when application created
         if (!SonicEngine.isGetInstanceAllowed()) {
@@ -157,8 +148,6 @@ public class BrowserActivity extends Activity {
         // issue, please use x5 or see https://developer.android.com/reference/android/webkit/
         // WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
         webSettings.setJavaScriptEnabled(true);
-        webView.removeJavascriptInterface("searchBoxJavaBridge_");
-        webView.addJavascriptInterface(new SonicJavaScriptInterface(sonicSessionClient, intent), "sonic");
 
         // init webview settings
         webSettings.setAllowContentAccess(true);
