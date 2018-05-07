@@ -1,83 +1,28 @@
 (function() {
-    /**
-     * 获取App信息
-     *
-     * @param responseCallback 应答回调
-     *
-     * 应答：
-     * {
-     *     "code": xx,
-     *     "msg": "xx",
-     *     "data": {
-     *         "versionCode": "xx",
-     *         "versionName": "xx"
-     *     }
-     * }
-     */
-    function getAppInfo(responseCallback) {
-        callNative(
-            "getAppInfo",
-            null,
-            responseCallback
-        );
-    }
 
-    /**
-     * 获取手机信息
-     *
-     * @param responseCallback 应答回调
-     *
-     * 应答：
-     * {
-     *     "code": xx,
-     *     "msg": "xx",
-     *     "data": {
-     *         "imei": "xx",
-     *         "imsi": "xx"
-     *     }
-     * }
-     */
-    function getPhoneInfo(responseCallback) {
-        alert("getPhoneInfo");
-        callNative(
-            "getPhoneInfo",
-            null,
-            responseCallback
-        );
-    }
-
-    /**
-     * 调用Native方法
-     */
-    function callNative(funcName, param, responseCallback) {
-        // 检测对象是否创建
-        if (window.WebViewJavascriptBridge) {
-            window.WebViewJavascriptBridge.callHandler(
-                funcName,
-                param,
-                responseCallback
-            );
-
-        } else {
-            // 未创建则监听Ready消息
-            document.addEventListener(
-                'WebViewJavascriptBridgeReady'
-                , function() {
-                    window.WebViewJavascriptBridge.callHandler(
-                        funcName,
-                        param,
-                        responseCallback
+     function connectWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener(
+                        'WebViewJavascriptBridgeReady'
+                        , function() {
+                            callback(WebViewJavascriptBridge)
+                        },
+                        false
                     );
-                },
-                false
-            );
-        }
-    }
+                }
+            }
 
-    // 定义全局对象
-    AppInterface = {
-        getAppInfo: getAppInfo,
-        getPhoneInfo: getPhoneInfo,
-        callHandler: callNative
-    };
+            connectWebViewJavascriptBridge(function(bridge) {
+                bridge.init(function(message, responseCallback) {
+                    var data = {
+                        'Javascript Responds': '测试中文!'
+                    };
+                    if (responseCallback) {
+                        responseCallback(data);
+                    }
+                });
+            })
+
 })();

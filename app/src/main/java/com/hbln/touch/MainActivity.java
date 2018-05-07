@@ -1,6 +1,7 @@
 package com.hbln.touch;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -10,13 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.IntentUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
 import com.hbln.touch.ui.activity.NormalBrowserActivity;
 import com.hbln.touch.ui.widget.vassonic.SonicRuntimeImpl;
 import com.tencent.sonic.sdk.SonicConfig;
 import com.tencent.sonic.sdk.SonicEngine;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE_STORAGE = 1;
@@ -28,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_main);
-        ToastUtils.showShort(Utils.getApp().getResources().getDisplayMetrics().widthPixels + "*" + Utils.getApp().getResources().getDisplayMetrics().heightPixels);
+        setContentView(R.layout.activity_autooff);
 
         if (hasPermission()) {
             init();
@@ -39,17 +40,25 @@ public class MainActivity extends AppCompatActivity {
         IntentUtils.getShutdownIntent();
     }
 
+
+    @SuppressLint("MissingPermission")
     private void init() {
         // init sonic engine
         if (!SonicEngine.isGetInstanceAllowed()) {
             SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());
         }
+        File file = new File(getExternalCacheDir() + "/crash");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        CrashUtils.init(file);
 
         overridePendingTransition(0, 0);
 
         Intent intent = new Intent(this, NormalBrowserActivity.class);
-//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/www/index.html");
-        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///" + getExternalCacheDir() + "/www/index.html");
+        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/www/index.html");
+//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///" + getExternalCacheDir() + "/www/index1.html");
+//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "http://www.lwcye.com/www/index1.html");
         startActivity(intent);
         finish();
     }

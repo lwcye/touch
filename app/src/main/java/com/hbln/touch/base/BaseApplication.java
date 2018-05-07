@@ -1,13 +1,9 @@
 package com.hbln.touch.base;
 
-import android.Manifest;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.support.multidex.MultiDex;
-import android.support.v4.app.ActivityCompat;
 
-import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
 
@@ -46,10 +42,7 @@ public class BaseApplication extends Application {
         LogUtils.getConfig().setLogSwitch(true);
         LogUtils.getConfig().setGlobalTag("cqcity");
         LogUtils.getConfig().setConsoleFilter(LogUtils.D);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            CrashUtils.init();
-        }
+        LogUtils.getConfig().setLog2FileSwitch(true);
 
     }
 

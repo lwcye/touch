@@ -13,5 +13,5 @@ package com.hbln.touch.constant;
  */
 public class ENVs {
     /** Js注入AppInterface的路径 */
-    public static final String INJECT_APP_INTERFACE = "www/js/AppInterface.js";
+    public static final String JS_FUNCTION_NAME = "jsonInfo";
 }

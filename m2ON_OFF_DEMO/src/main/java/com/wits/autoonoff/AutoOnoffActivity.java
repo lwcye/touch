@@ -37,7 +37,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.view.View.OnClickListener;
 
 public class AutoOnoffActivity extends Activity {
@@ -131,7 +130,7 @@ public class AutoOnoffActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_autooff);
         etxtTimes = (EditText) findViewById(R.id.etxtTimes);
         txtMsg = (TextView) findViewById(R.id.textView1);
         mbtnSet = (Button) findViewById(R.id.btnSet);

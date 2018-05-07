@@ -16,15 +16,25 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.blankj.utilcode.util.FileIOUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.Utils;
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeUtil;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
+import com.google.gson.Gson;
 import com.hbln.touch.base.BaseApplication;
+import com.hbln.touch.bean.JsBean;
 import com.hbln.touch.constant.ENVs;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +43,6 @@ import java.util.Map;
  */
 public class WebViewUtil {
     private static WebViewUtil ourInstance = new WebViewUtil();
-    /** Javascript注入规则映射 */
-    private Map<String, String> mJavascriptInjectionMap = new HashMap<>();
-    /** 是否已经注册Js */
-    private boolean mIsRegisterJs = false;
 
     private WebViewUtil() {
     }
@@ -46,7 +52,7 @@ public class WebViewUtil {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void initWebView(Activity activity, WebView mWebView) {
+    public void initWebView(Activity activity, BridgeWebView mWebView) {
         WebSettings mWebSettings = mWebView.getSettings();
         // 自适应窗口
         mWebSettings.setUseWideViewPort(true);
@@ -74,7 +80,6 @@ public class WebViewUtil {
         mWebSettings.setSavePassword(false);
         mWebSettings.setSaveFormData(false);
         // 设置UserAgent
-        mWebSettings.setUserAgentString("chrome");
         WebView.setWebContentsDebuggingEnabled(true);
         // 是否允许访问缓存
         mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -90,7 +95,7 @@ public class WebViewUtil {
             BaseApplication.getInstance().startActivity(intent);
         });
         // 状态处理
-        mWebView.setWebViewClient(new WebViewClient() {
+        mWebView.setWebViewClient(new BridgeWebViewClient(mWebView) {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
@@ -107,13 +112,13 @@ public class WebViewUtil {
                 super.onPageFinished(view, url);
                 // 网络图片延迟加载
                 view.getSettings().setBlockNetworkImage(false);
+
                 // 规则匹配则注入 javascript
-                BridgeUtil.webViewLoadLocalJs(view, ENVs.INJECT_APP_INTERFACE);
+                BridgeUtil.webViewLoadLocalJs(view, "www/js/AppInterface.js");
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
@@ -214,23 +219,52 @@ public class WebViewUtil {
         });
     }
 
-
+    /**
+     * 注册JS的回调
+     *
+     * @param webView
+     */
     public void registerAppInterface(BridgeWebView webView) {
-        webView.setDefaultHandler(new DefaultHandler());
-        webView.registerHandler("getPhoneInfo", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                LogUtils.e(data);
-                function.onCallBack("submitFromWeb exe, response data from Java");
-            }
+        webView.setDefaultHandler((data, function) -> {
+            JsBean jsBean = new Gson().fromJson(data, JsBean.class);
+            handleJsData(function, jsBean);
         });
-        webView.registerHandler("getJsonInfo", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                LogUtils.e(data);
-                function.onCallBack("submitFromWeb exe, response data from Java");
+    }
+
+    /**
+     * 处理JS回调的数据
+     *
+     * @param function
+     * @param jsBean
+     */
+    private void handleJsData(CallBackFunction function, JsBean jsBean) {
+        if (jsBean.function.equals(ENVs.JS_FUNCTION_NAME)) {
+            //读取JSON文件
+            File file = new File(Utils.getApp().getExternalCacheDir() + "/" + jsBean.jsonName);
+            if (file.exists()) {
+                function.onCallBack(FileIOUtils.readFile2String(file));
+            } else {
+                function.onCallBack(AssetsUtil.getAssetsString("www/static/" + jsBean.jsonName, "utf-8"));
             }
-        });
-        webView.send("hello");
+        }
+    }
+
+    public void onDestroy(WebView mWebView) {
+        // 释放WebView
+        if (mWebView != null) {
+            mWebView.setOnKeyListener(null);
+            mWebView.setWebViewClient(null);
+            mWebView.setDownloadListener(null);
+
+            mWebView.clearHistory();
+            mWebView.clearCache(true);
+            mWebView.loadUrl("about:blank");
+            mWebView.onPause();
+            mWebView.removeAllViews();
+            mWebView.destroyDrawingCache();
+            mWebView.pauseTimers();
+            mWebView.destroy();
+            mWebView = null;
+        }
     }
 }

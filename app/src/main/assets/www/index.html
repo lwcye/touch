@@ -1,1 +1,82 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><title>my-project</title><link href=./static/css/app.8191bc18088320656c2080494b0c5745.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.0671657c8ccde05d3efd.js></script><script type=text/javascript src=./static/js/vendor.4ee3572c6982bca9eed1.js></script><script type=text/javascript src=./static/js/app.96372ccff7756574ef13.js></script></body></html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script type="text/javascript" src="/wcs/scripts/jquery.js"></script> -->
+    <title>
+        js调用java
+    </title>
+    <style type="text/css">
+        div {
+            margin-top:30px auto;
+        }
+        input{
+            border-radius:5px;
+            padding:5px;
+            margin:5px;
+            outline:none;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+
+<div>
+    <h3>数据</h3>
+    <p id="show">
+        测试结果
+    </p>
+    <p>
+        <input type="button" value="getPhoneInfo" onclick="getPhoneInfo();"/>
+        <input type="button" value="getPhoneInfo1" onclick="getPhoneInfo1();"/>
+        <input type="button" value="getPhoneInfo2" onclick="getPhoneInfo2();"/>
+        <input type="button" value="getPhoneInfo3" onclick="getPhoneInfo3();"/>
+    </p>
+</div>
+</body>
+
+<script>
+	function getPhoneInfo() {
+	    var params = {"function":"jsonInfo","jsonName":"index.json"}
+        window.WebViewJavascriptBridge.send(
+        params
+        , function(responseData) {
+            alert(responseData)
+            var json = responseData;
+            document.getElementById("show").innerHTML = responseData;
+        });
+    }
+    	function getPhoneInfo1() {
+	    var params = {"function":"jsonInfo","jsonName":"cwszinfo.json"}
+        window.WebViewJavascriptBridge.send(
+        params
+        , function(responseData) {
+            var json = responseData;
+            document.getElementById("show").innerHTML = responseData;
+        });
+    }
+    	function getPhoneInfo2() {
+	    var params = {"function":"jsonInfo","jsonName":"jcopeninfo.json"}
+        window.WebViewJavascriptBridge.send(
+        params
+        , function(responseData) {
+            var json = responseData;
+            document.getElementById("show").innerHTML = responseData;
+        });
+    }
+    	function getPhoneInfo3() {
+	    var params = {"function":"jsonInfo","jsonName":"tuwen.json"}
+        window.WebViewJavascriptBridge.send(
+        params
+        , function(responseData) {
+            var json = responseData;
+            document.getElementById("show").innerHTML = responseData;
+        });
+    }
+
+
+</script>
+</html>

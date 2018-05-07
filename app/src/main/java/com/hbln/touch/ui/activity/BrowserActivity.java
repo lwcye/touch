@@ -198,7 +198,7 @@ public class BrowserActivity extends Activity {
             Context ctx = context.get();
             if (null != ctx) {
                 try {
-                    InputStream offlineHtmlInputStream = ctx.getAssets().open("sonic-demo-index.html");
+                    InputStream offlineHtmlInputStream = ctx.getAssets().open("sonic-demo-index1.html");
                     responseStream = new BufferedInputStream(offlineHtmlInputStream);
                     return SonicConstants.ERROR_CODE_SUCCESS;
                 } catch (Throwable e) {

@@ -1,7 +1,7 @@
 # common configuration
 -keepattributes SourceFile, LineNumberTable
 -dontwarn javax.annotation.**
-
+-ignorewarnings
 # support v7
 -keep public class android.support.v7.widget.** { *; }
 -keep public class android.support.v7.internal.widget.** { *; }
@@ -33,7 +33,7 @@
 
 # okhttp3
 -dontwarn okhttp3.**
-
+-dontwarn com.tbruyelle.rxpermissions2.**
 # rxjava
 -keep class rx.schedulers.Schedulers {
     public static <methods>;
@@ -43,6 +43,9 @@
 }
 -keep class rx.schedulers.TestScheduler {
     public <methods>;
+}
+-keep class io.reactivex.functions.* {
+    *;
 }
 -keep class rx.schedulers.Schedulers {
     public static ** test();

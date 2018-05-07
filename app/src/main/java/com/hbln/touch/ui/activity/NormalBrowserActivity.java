@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -11,8 +12,8 @@ import android.widget.Button;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.hbln.touch.R;
 import com.hbln.touch.base.BaseActivity;
-import com.hbln.touch.utils.SysUtil;
 import com.hbln.touch.utils.WebViewUtil;
+import com.wits.autoonoff.AutoOnoffActivity;
 
 /**
  * Created by 41569 on 2018/5/6.
@@ -39,8 +40,22 @@ public class NormalBrowserActivity extends BaseActivity {
         // init webview
         mWebView = findViewById(R.id.webview);
         Button btnShutdown = findViewById(R.id.btn_shutdown);
-        btnShutdown.setOnClickListener(view -> SysUtil.getInstance().shutDown(getActivity()));
+        btnShutdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AutoOnoffActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+//        btnShutdown.setOnClickListener(view -> SysUtil.getInstance().shutDown(getActivity()));
+//        findViewById(R.id.btn_startup).setOnClickListener(view -> SysUtil.getInstance().writeOnTimeToMC(1));
         initWebView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WebViewUtil.getInstance().onDestroy(mWebView);
     }
 
     private void initWebView() {

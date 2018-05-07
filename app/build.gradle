@@ -26,7 +26,7 @@ android {
     sourceSets {
         // 动态库目录
         main {
-            jniLibs.srcDir 'libs'
+            jniLibs.srcDir 'jniLibs'
         }
     }
     buildTypes {
@@ -37,8 +37,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             multiDexEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -52,33 +52,15 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     // 方法数超65535
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.android.support:cardview-v7:26.1.0'
-    implementation 'com.blankj:utilcode:1.14.2'
-
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.android.support:multidex:1.0.3'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.blankj:utilcode:1.14.2'
     compile 'io.reactivex:rxjava:1.2.6'
-
     // 文件下载(file downloader)
     compile 'com.liulishuo.filedownloader:library:1.4.1'
-
-    // event bus
-    compile 'org.greenrobot:eventbus:3.0.0'
-
-    // 图片加载(glide)
-    compile 'com.github.bumptech.glide:glide:4.0.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    compile 'jp.wasabeef:glide-transformations:2.0.2'
-
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:1.0'
-    compile 'com.trello:rxlifecycle-components:1.0'
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    implementation 'com.tencent.sonic:sdk:3.0.0'
-    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+    compile 'com.tencent.sonic:sdk:3.0.0'
+    compile 'com.github.lzyzsd:jsbridge:1.0.4'
+    compile 'com.google.code.gson:gson:2.2.4'
+    implementation project(':m2ON_OFF_DEMO')
 }

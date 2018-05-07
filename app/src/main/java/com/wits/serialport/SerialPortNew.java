@@ -29,13 +29,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-public class SerialPort {
+public class SerialPortNew {
 	/*======================================*/
 	/*======================================*/
 	/*此文件必须放到包"com.wits.serialport"中*/
 	/*======================================*/
 	/*======================================*/
-	private static final String TAG = "SerialPort";
+	private static final String TAG = "SerialPortNew";
 
 	/*
 	 * Do not remove or rename the field mFd: it is used by native method close();
@@ -44,11 +44,11 @@ public class SerialPort {
 	private FileInputStream mFileInputStream;
 	private FileOutputStream mFileOutputStream;
 
-	public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
+	public SerialPortNew(File device, int baudrate, int flags) throws SecurityException, IOException {
 
 		/* Check access permission */
 		if (!device.canRead() || !device.canWrite()) {
-			Log.e(TAG,"SerialPort not read or write!");
+			Log.e(TAG,"SerialPortNew not read or write!");
 			try {
 				/* Missing read/write permission, trying to chmod the file */
 				Process su;
@@ -65,10 +65,10 @@ public class SerialPort {
 				throw new SecurityException();
 			}
 		}
-		Log.i(TAG,"SerialPort can read or write!" + device.getAbsolutePath().toString());
+		Log.i(TAG,"SerialPortNew can read or write!" + device.getAbsolutePath().toString());
 		mFd = open(device.getAbsolutePath().toString(), baudrate, flags);
 		if (mFd == null) {
-			Log.e(TAG, "SerialPort native open return null!");
+			Log.e(TAG, "SerialPortNew native open return null!");
 			throw new IOException();
 		}
 		mFileInputStream = new FileInputStream(mFd);
