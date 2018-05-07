@@ -1,4 +1,4 @@
-package com.hbln.touch.model;
+package com.hbln.touch.bean;
 
 
 import com.blankj.utilcode.util.LogUtils;
@@ -20,19 +20,9 @@ import rx.functions.Action1;
  * @date -
  * @note -
  */
-public class JsPendingActionResult extends ActionResult {
+public class JsPendingActionResult extends BaseActionResult {
     /** 回调 */
     private CallBackFunction mCallback;
-
-    /**
-     * 构造函数
-     *
-     * @param code 代码
-     * @param result 消息
-     */
-    public JsPendingActionResult(int code, String result) {
-        super(code, result);
-    }
 
     /**
      * 设置回调

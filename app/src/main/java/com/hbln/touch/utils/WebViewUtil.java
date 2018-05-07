@@ -16,15 +16,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeUtil;
-import com.hbln.touch.base.MyApplication;
+import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.github.lzyzsd.jsbridge.CallBackFunction;
+import com.github.lzyzsd.jsbridge.DefaultHandler;
+import com.hbln.touch.base.BaseApplication;
 import com.hbln.touch.constant.ENVs;
-import com.hbln.touch.web.AppInterface;
-import com.hbln.touch.web.WebViewManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,8 @@ public class WebViewUtil {
     private static WebViewUtil ourInstance = new WebViewUtil();
     /** Javascript注入规则映射 */
     private Map<String, String> mJavascriptInjectionMap = new HashMap<>();
+    /** 是否已经注册Js */
+    private boolean mIsRegisterJs = false;
 
     private WebViewUtil() {
     }
@@ -84,7 +87,7 @@ public class WebViewUtil {
             Uri uri = Uri.parse(url);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            MyApplication.getInstance().startActivity(intent);
+            BaseApplication.getInstance().startActivity(intent);
         });
         // 状态处理
         mWebView.setWebViewClient(new WebViewClient() {
@@ -104,8 +107,8 @@ public class WebViewUtil {
                 super.onPageFinished(view, url);
                 // 网络图片延迟加载
                 view.getSettings().setBlockNetworkImage(false);
-                // 注入Javascript代码
-                injectJavascript(view, url);
+                // 规则匹配则注入 javascript
+                BridgeUtil.webViewLoadLocalJs(view, ENVs.INJECT_APP_INTERFACE);
             }
 
             @Override
@@ -178,7 +181,7 @@ public class WebViewUtil {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 DialogUtil.getInstance().defAlert(activity, message);
-
+                result.confirm();
                 return true;
                 //return super.onJsAlert(view, url, message, result);
             }
@@ -211,39 +214,23 @@ public class WebViewUtil {
         });
     }
 
-    public void registerAppInterface() {
-        AppInterface.getInstance().clear();
-        AppInterface.getInstance().register();
-    }
 
-    public void injectAppInterface() {
-        mJavascriptInjectionMap.put("*", ENVs.INJECT_APP_INTERFACE);
-    }
-
-    /**
-     * 注入javascript代码
-     *
-     * @param webview webview
-     * @param url url
-     */
-    private void injectJavascript(WebView webview, String url) {
-        List<String> injectedRecord = new ArrayList<>();
-
-        for (Map.Entry<String, String> entry : mJavascriptInjectionMap.entrySet()) {
-            String startUrl = entry.getKey();
-            String javascriptPath = entry.getValue();
-            if ("*".equals(startUrl) || WebViewManager.matchStartUrl(url, startUrl)) {
-                if (!injectedRecord.contains(javascriptPath)) {
-                    // 规则匹配则注入javascript
-                    BridgeUtil.webViewLoadLocalJs(webview, javascriptPath);
-                    // 调用注入完成
-                    webview.loadUrl("javascript:try{onInjectJS();}catch(e){}");
-                    // 标记为已注入
-                    injectedRecord.add(javascriptPath);
-                }
-
-                continue;
+    public void registerAppInterface(BridgeWebView webView) {
+        webView.setDefaultHandler(new DefaultHandler());
+        webView.registerHandler("getPhoneInfo", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                LogUtils.e(data);
+                function.onCallBack("submitFromWeb exe, response data from Java");
             }
-        }
+        });
+        webView.registerHandler("getJsonInfo", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                LogUtils.e(data);
+                function.onCallBack("submitFromWeb exe, response data from Java");
+            }
+        });
+        webView.send("hello");
     }
 }

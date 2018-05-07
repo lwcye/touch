@@ -38,6 +38,7 @@
      * }
      */
     function getPhoneInfo(responseCallback) {
+        alert("getPhoneInfo");
         callNative(
             "getPhoneInfo",
             null,

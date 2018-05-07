@@ -22,14 +22,14 @@ import com.blankj.utilcode.util.Utils;
  * @date -
  * @note -
  */
-public class MyApplication extends Application {
-    private static MyApplication myApplication;
+public class BaseApplication extends Application {
+    private static BaseApplication sBaseApplication;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Utils.init(this);
-        myApplication = this;
+        sBaseApplication = this;
         init();
     }
 
@@ -53,7 +53,7 @@ public class MyApplication extends Application {
 
     }
 
-    public static MyApplication getInstance() {
-        return myApplication;
+    public static BaseApplication getInstance() {
+        return sBaseApplication;
     }
 }

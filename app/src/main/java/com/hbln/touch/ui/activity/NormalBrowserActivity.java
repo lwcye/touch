@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.Button;
 
+import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.hbln.touch.R;
 import com.hbln.touch.base.BaseActivity;
 import com.hbln.touch.utils.SysUtil;
@@ -20,7 +20,7 @@ import com.hbln.touch.utils.WebViewUtil;
 public class NormalBrowserActivity extends BaseActivity {
     public final static String PARAM_URL = "param_url";
     private String mUrl;
-    private WebView mWebView;
+    private BridgeWebView mWebView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,10 +46,7 @@ public class NormalBrowserActivity extends BaseActivity {
     private void initWebView() {
         WebViewUtil.getInstance().initWebView(getActivity(), mWebView);
         // 注册需要Context的AppInterface
-        WebViewUtil.getInstance().registerAppInterface();
-
-        // 在这里注册，重庆城页面相关的Native调用或者Url拦截
-        WebViewUtil.getInstance().injectAppInterface();
+        WebViewUtil.getInstance().registerAppInterface(mWebView);
     }
 
 
