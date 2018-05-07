@@ -7,17 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ViewUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.IntentUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.hbln.touch.ui.activity.BrowserActivity;
 import com.hbln.touch.ui.activity.NormalBrowserActivity;
 import com.hbln.touch.ui.widget.vassonic.SonicRuntimeImpl;
 import com.tencent.sonic.sdk.SonicConfig;
@@ -34,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
-        ToastUtils.showShort(Utils.getApp().getResources().getDisplayMetrics().widthPixels+ "*" + Utils.getApp().getResources().getDisplayMetrics().heightPixels);
+        ToastUtils.showShort(Utils.getApp().getResources().getDisplayMetrics().widthPixels + "*" + Utils.getApp().getResources().getDisplayMetrics().heightPixels);
 
         if (hasPermission()) {
             init();
@@ -53,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
         Intent intent = new Intent(this, NormalBrowserActivity.class);
-        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/chumo/index.html");
+//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/www/index.html");
+        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///" + getExternalCacheDir() + "/www/index.html");
         startActivity(intent);
         finish();
     }

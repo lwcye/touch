@@ -1,5 +1,6 @@
 package com.hbln.touch.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,13 +16,34 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.github.lzyzsd.jsbridge.BridgeUtil;
 import com.hbln.touch.base.MyApplication;
+import com.hbln.touch.constant.ENVs;
+import com.hbln.touch.web.AppInterface;
+import com.hbln.touch.web.WebViewManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * \
  */
 public class WebViewUtil {
-    public static void initWebView(Activity activity, WebView mWebView) {
+    private static WebViewUtil ourInstance = new WebViewUtil();
+    /** Javascript注入规则映射 */
+    private Map<String, String> mJavascriptInjectionMap = new HashMap<>();
+
+    private WebViewUtil() {
+    }
+
+    public static WebViewUtil getInstance() {
+        return ourInstance;
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void initWebView(Activity activity, WebView mWebView) {
         WebSettings mWebSettings = mWebView.getSettings();
         // 自适应窗口
         mWebSettings.setUseWideViewPort(true);
@@ -32,8 +54,14 @@ public class WebViewUtil {
         mWebSettings.setAppCacheEnabled(true);
         // 允许访问文件
         mWebSettings.setAllowFileAccess(true);
+        mWebSettings.setAllowFileAccessFromFileURLs(true);
+        mWebSettings.setAllowUniversalAccessFromFileURLs(true);
+        // 缩放功能
+        mWebSettings.setSupportZoom(false);
+        mWebSettings.setBuiltInZoomControls(false);
         // 允许H5读取定位
         mWebSettings.setGeolocationEnabled(true);
+
         // 允许自动播放音频
         mWebSettings.setMediaPlaybackRequiresUserGesture(false);
         mWebSettings.setJavaScriptEnabled(true);
@@ -44,7 +72,7 @@ public class WebViewUtil {
         mWebSettings.setSaveFormData(false);
         // 设置UserAgent
         mWebSettings.setUserAgentString("chrome");
-
+        WebView.setWebContentsDebuggingEnabled(true);
         // 是否允许访问缓存
         mWebSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
@@ -76,6 +104,8 @@ public class WebViewUtil {
                 super.onPageFinished(view, url);
                 // 网络图片延迟加载
                 view.getSettings().setBlockNetworkImage(false);
+                // 注入Javascript代码
+                injectJavascript(view, url);
             }
 
             @Override
@@ -179,5 +209,41 @@ public class WebViewUtil {
                 //return super.onJsPrompt(view, url, message, defaultValue, result);
             }
         });
+    }
+
+    public void registerAppInterface() {
+        AppInterface.getInstance().clear();
+        AppInterface.getInstance().register();
+    }
+
+    public void injectAppInterface() {
+        mJavascriptInjectionMap.put("*", ENVs.INJECT_APP_INTERFACE);
+    }
+
+    /**
+     * 注入javascript代码
+     *
+     * @param webview webview
+     * @param url url
+     */
+    private void injectJavascript(WebView webview, String url) {
+        List<String> injectedRecord = new ArrayList<>();
+
+        for (Map.Entry<String, String> entry : mJavascriptInjectionMap.entrySet()) {
+            String startUrl = entry.getKey();
+            String javascriptPath = entry.getValue();
+            if ("*".equals(startUrl) || WebViewManager.matchStartUrl(url, startUrl)) {
+                if (!injectedRecord.contains(javascriptPath)) {
+                    // 规则匹配则注入javascript
+                    BridgeUtil.webViewLoadLocalJs(webview, javascriptPath);
+                    // 调用注入完成
+                    webview.loadUrl("javascript:try{onInjectJS();}catch(e){}");
+                    // 标记为已注入
+                    injectedRecord.add(javascriptPath);
+                }
+
+                continue;
+            }
+        }
     }
 }

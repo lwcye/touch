@@ -1,43 +1,26 @@
 package com.hbln.touch.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.DownloadListener;
-import android.webkit.GeolocationPermissions;
-import android.webkit.JsPromptResult;
-import android.webkit.JsResult;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.hbln.touch.R;
 import com.hbln.touch.base.BaseActivity;
-import com.hbln.touch.base.MyApplication;
-import com.hbln.touch.utils.DialogUtil;
+import com.hbln.touch.utils.SysUtil;
 import com.hbln.touch.utils.WebViewUtil;
-
-import rx.functions.Action1;
 
 /**
  * Created by 41569 on 2018/5/6.
  */
-
 public class NormalBrowserActivity extends BaseActivity {
-    private String mUrl;
     public final static String PARAM_URL = "param_url";
+    private String mUrl;
     private WebView mWebView;
-    private WebSettings mWebSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,17 +39,17 @@ public class NormalBrowserActivity extends BaseActivity {
         // init webview
         mWebView = findViewById(R.id.webview);
         Button btnShutdown = findViewById(R.id.btn_shutdown);
-        btnShutdown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        btnShutdown.setOnClickListener(view -> SysUtil.getInstance().shutDown(getActivity()));
         initWebView();
     }
 
     private void initWebView() {
-        WebViewUtil.initWebView(getActivity(), mWebView);
+        WebViewUtil.getInstance().initWebView(getActivity(), mWebView);
+        // 注册需要Context的AppInterface
+        WebViewUtil.getInstance().registerAppInterface();
+
+        // 在这里注册，重庆城页面相关的Native调用或者Url拦截
+        WebViewUtil.getInstance().injectAppInterface();
     }
 
 

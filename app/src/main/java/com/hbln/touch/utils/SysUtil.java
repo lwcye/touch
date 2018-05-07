@@ -2,49 +2,37 @@ package com.hbln.touch.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Message;
-import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.wits.serialport.SerialPort;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import rx.Observable;
-import rx.Scheduler;
-import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by 41569 on 2018/5/6.
  */
 
-class SysUtil {
+public class SysUtil {
     private static final SysUtil ourInstance = new SysUtil();
-    private boolean mFlag;
     private static final Long onTimes = 60L;
-    private Timer timer;
     public static SerialPort mSerialPort;
     public static BufferedOutputStream mOutputStream;
     public static BufferedInputStream mInputStream;
-
-    static SysUtil getInstance() {
-        return ourInstance;
-    }
+    private boolean mFlag;
+    private Timer timer;
 
     private SysUtil() {
         //串口读写数据流
@@ -61,6 +49,29 @@ class SysUtil {
         } catch (InvalidParameterException e) {
             LogUtils.e("-----------------InvalidParameterException");
         }
+    }
+
+    public static SysUtil getInstance() {
+        return ourInstance;
+    }
+
+    //向单片机发送的数据9个byte
+    public static byte[] longToByteArray(int flags, long times) {
+        byte[] result = new byte[9];
+        result[0] = (byte) 0x00;
+        result[1] = (byte) 0xaa;
+        result[2] = (byte) 0xff;
+        result[3] = (byte) 0x55;
+
+        result[4] = (byte) (flags);
+
+        result[5] = (byte) ((times >> 16) & 0xFF);
+        result[6] = (byte) ((times >> 8) & 0xFF);
+        result[7] = (byte) (times & 0xFF);
+
+        result[8] = (byte) 0x55;
+
+        return result;
     }
 
     //关闭串口
@@ -95,7 +106,6 @@ class SysUtil {
         return mSerialPort;
     }
 
-
     /**
      * 设置或取消自动开机时间
      *
@@ -108,8 +118,9 @@ class SysUtil {
             byte[] mBuffer = longToByteArray(flags, times);
             LogUtils.e("writeOnTimeToMC--------time=" + times);
             int i;
-            for (i = 0; i < mBuffer.length; i++)
+            for (i = 0; i < mBuffer.length; i++) {
                 LogUtils.d("BUFFER-----HASHCODE=" + mBuffer[i]);
+            }
             Observable.just(null)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
@@ -165,7 +176,9 @@ class SysUtil {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-
+                            if (throwable instanceof SuccessException) {
+                                ToastUtils.showLong("请点击关机,系统将在" + onTimes + "秒后自动开机!");
+                            }
                         }
                     }, new Action0() {
                         @Override
@@ -185,28 +198,9 @@ class SysUtil {
         }
     }
 
-    //向单片机发送的数据9个byte
-    public static byte[] longToByteArray(int flags, long times) {
-        byte[] result = new byte[9];
-        result[0] = (byte) 0x00;
-        result[1] = (byte) 0xaa;
-        result[2] = (byte) 0xff;
-        result[3] = (byte) 0x55;
-
-        result[4] = (byte) (flags);
-
-        result[5] = (byte) ((times >> 16) & 0xFF);
-        result[6] = (byte) ((times >> 8) & 0xFF);
-        result[7] = (byte) (times & 0xFF);
-
-        result[8] = (byte) 0x55;
-
-        return result;
-    }
-
     class WriteTask extends TimerTask {
+        @Override
         public void run() {
-
             writeOnTimeToMC(1, onTimes);
         }
     }

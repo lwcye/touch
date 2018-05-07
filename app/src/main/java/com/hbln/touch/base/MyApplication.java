@@ -2,7 +2,9 @@ package com.hbln.touch.base;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
 
 import com.blankj.utilcode.util.CrashUtils;
@@ -29,6 +31,12 @@ public class MyApplication extends Application {
         Utils.init(this);
         myApplication = this;
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     /**
