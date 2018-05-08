@@ -1,9 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hbln.touch.MainActivity">
+    android:orientation="horizontal"
+    tools:context="com.hbln.touch.ui.activity.MainActivity">
 
-</FrameLayout>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y25"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/y5"
+                android:layout_marginTop="@dimen/y5"
+                android:background="@color/white"
+                android:text="村务公开"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/t20" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/y5"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="潘安湖街道-马庄村马庄村周一升旗仪式潘安湖街道-马庄村马庄村周一升旗仪式"
+            android:textColor="@color/colorPrimary" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/y5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/y5"
+                android:lines="1"
+                android:text="党组织各项工作制度"
+                android:textColor="@color/black_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="@dimen/y5"
+                android:lines="1"
+                android:text="2017-07-14"
+                android:textColor="@color/black_title" />
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/y5"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="潘安湖街道马庄村马庄村潘安湖街道马庄村马庄村潘安湖街道马庄村马庄村"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/y5"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="党组织各项工作制度 2017-07-14"
+            android:textColor="@color/black_title" />
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    </android.support.v7.widget.LinearLayoutCompat>
+</android.support.v7.widget.LinearLayoutCompat>

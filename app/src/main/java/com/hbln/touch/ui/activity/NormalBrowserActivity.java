@@ -24,9 +24,6 @@ public class NormalBrowserActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_browser);
         initView();
         initData();
@@ -37,10 +34,6 @@ public class NormalBrowserActivity extends BaseActivity {
     public void initView() {
         // init webview
         mWebView = findViewById(R.id.webview);
-        findViewById(R.id.btn_shutdown).setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), AutoOnoffActivity.class);
-            getActivity().startActivity(intent);
-        });
         initWebView();
     }
 
