@@ -6,6 +6,9 @@ import android.support.multidex.MultiDex;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
+import com.hbln.touch.BuildConfig;
+
+import org.xutils.x;
 
 /**
  * <p>describe</p><br>
@@ -39,6 +42,9 @@ public class BaseApplication extends Application {
      * 初始化
      */
     private void init() {
+        x.Ext.init(this);
+        x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
+
         LogUtils.getConfig().setLogSwitch(true);
         LogUtils.getConfig().setGlobalTag("cqcity");
         LogUtils.getConfig().setConsoleFilter(LogUtils.D);

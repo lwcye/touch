@@ -3,20 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.hbln.touch.ui.activity.BrowserActivity">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_shutdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="关机" />
-
-    <Button
-        android:id="@+id/btn_startup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开机60秒" />
+        android:text="定时开关机" />
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/webview"

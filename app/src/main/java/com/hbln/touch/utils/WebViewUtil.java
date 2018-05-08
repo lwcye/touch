@@ -14,29 +14,20 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.blankj.utilcode.util.FileIOUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
-import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeUtil;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
-import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
 import com.hbln.touch.base.BaseApplication;
 import com.hbln.touch.bean.JsBean;
 import com.hbln.touch.constant.ENVs;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * \
@@ -105,6 +96,7 @@ public class WebViewUtil {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+
             }
 
             @Override
@@ -112,9 +104,8 @@ public class WebViewUtil {
                 super.onPageFinished(view, url);
                 // 网络图片延迟加载
                 view.getSettings().setBlockNetworkImage(false);
-
                 // 规则匹配则注入 javascript
-                BridgeUtil.webViewLoadLocalJs(view, "www/js/AppInterface.js");
+                BridgeUtil.webViewLoadLocalJs(view, "js/AppInterface.js");
             }
 
             @Override
@@ -226,6 +217,7 @@ public class WebViewUtil {
      */
     public void registerAppInterface(BridgeWebView webView) {
         webView.setDefaultHandler((data, function) -> {
+            LogUtils.e(data);
             JsBean jsBean = new Gson().fromJson(data, JsBean.class);
             handleJsData(function, jsBean);
         });
@@ -238,13 +230,13 @@ public class WebViewUtil {
      * @param jsBean
      */
     private void handleJsData(CallBackFunction function, JsBean jsBean) {
-        if (jsBean.function.equals(ENVs.JS_FUNCTION_NAME)) {
+        if (jsBean.method.equals(ENVs.JS_FUNCTION_NAME)) {
             //读取JSON文件
             File file = new File(Utils.getApp().getExternalCacheDir() + "/" + jsBean.jsonName);
             if (file.exists()) {
                 function.onCallBack(FileIOUtils.readFile2String(file));
             } else {
-                function.onCallBack(AssetsUtil.getAssetsString("www/static/" + jsBean.jsonName, "utf-8"));
+                function.onCallBack(AssetsUtil.getAssetsString(jsBean.jsonName, "utf-8"));
             }
         }
     }

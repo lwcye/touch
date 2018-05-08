@@ -5,6 +5,6 @@ package com.hbln.touch.bean;
  */
 
 public class JsBean {
-    public String function;
+    public String method;
     public String jsonName;
 }

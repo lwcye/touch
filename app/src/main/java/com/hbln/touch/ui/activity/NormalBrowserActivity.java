@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.hbln.touch.R;
@@ -39,16 +37,10 @@ public class NormalBrowserActivity extends BaseActivity {
     public void initView() {
         // init webview
         mWebView = findViewById(R.id.webview);
-        Button btnShutdown = findViewById(R.id.btn_shutdown);
-        btnShutdown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AutoOnoffActivity.class);
-                getActivity().startActivity(intent);
-            }
+        findViewById(R.id.btn_shutdown).setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), AutoOnoffActivity.class);
+            getActivity().startActivity(intent);
         });
-//        btnShutdown.setOnClickListener(view -> SysUtil.getInstance().shutDown(getActivity()));
-//        findViewById(R.id.btn_startup).setOnClickListener(view -> SysUtil.getInstance().writeOnTimeToMC(1));
         initWebView();
     }
 

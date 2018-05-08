@@ -13,10 +13,7 @@ import android.view.WindowManager;
 
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.IntentUtils;
-import com.hbln.touch.ui.activity.NormalBrowserActivity;
-import com.hbln.touch.ui.widget.vassonic.SonicRuntimeImpl;
-import com.tencent.sonic.sdk.SonicConfig;
-import com.tencent.sonic.sdk.SonicEngine;
+import com.hbln.touch.ui.activity.VideoActivity;
 
 import java.io.File;
 
@@ -43,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("MissingPermission")
     private void init() {
-        // init sonic engine
-        if (!SonicEngine.isGetInstanceAllowed()) {
-            SonicEngine.createInstance(new SonicRuntimeImpl(getApplication()), new SonicConfig.Builder().build());
-        }
         File file = new File(getExternalCacheDir() + "/crash");
         if (!file.exists()) {
             file.mkdir();
@@ -55,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         overridePendingTransition(0, 0);
 
-        Intent intent = new Intent(this, NormalBrowserActivity.class);
-        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///android_asset/www/index.html");
-//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "file:///" + getExternalCacheDir() + "/www/index1.html");
-//        intent.putExtra(NormalBrowserActivity.PARAM_URL, "http://www.lwcye.com/www/index1.html");
+        Intent intent = new Intent(this, VideoActivity.class);
+        intent.putExtra("url", "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4");
+        intent.putExtra("title", "测试");
         startActivity(intent);
         finish();
     }
