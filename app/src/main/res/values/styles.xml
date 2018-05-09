@@ -37,14 +37,14 @@
     </style>
 
     <style name="view_line_vir">
-        <item name="android:layout_width">@dimen/y1</item>
+        <item name="android:layout_width">@dimen/x1</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/gray2</item>
     </style>
 
     <style name="view_line_block">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/y10</item>
+        <item name="android:layout_height">@dimen/x10</item>
         <item name="android:background">@color/gray2</item>
     </style>
 </resources>

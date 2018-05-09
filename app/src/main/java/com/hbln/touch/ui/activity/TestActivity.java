@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hbln.touch.R;
 import com.hbln.touch.base.BaseActivity;
 import com.wits.autoonoff.AutoOnoffActivity;
@@ -14,6 +16,7 @@ public class TestActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        ToastUtils.showLong(ScreenUtils.getScreenWidth() + " X " + ScreenUtils.getScreenHeight());
     }
 
     @Override
