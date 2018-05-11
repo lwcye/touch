@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.byid.android.ByIdActivity;
 import com.hbln.touch.R;
 import com.hbln.touch.base.BaseActivity;
 import com.wits.autoonoff.AutoOnoffActivity;
@@ -53,6 +54,11 @@ public class TestActivity extends BaseActivity {
 
     public void shutdown(View view) {
         Intent intent = new Intent(getActivity(), AutoOnoffActivity.class);
+        getActivity().startActivity(intent);
+    }
+
+    public void serial(View view) {
+        Intent intent = new Intent(getActivity(), ByIdActivity.class);
         getActivity().startActivity(intent);
     }
 }

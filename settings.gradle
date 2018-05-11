@@ -1,2 +1,3 @@
 include ':app', ':X5WebDemo', ':VasSonic'
 include ':m2ON_OFF_DEMO'
+include ':myserial'
