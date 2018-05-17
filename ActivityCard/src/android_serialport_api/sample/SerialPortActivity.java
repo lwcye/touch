@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
 import android_serialport_api.SerialPort;
+import android_serialport_api.sample.base.Application;
 
 public abstract class SerialPortActivity extends AppCompatActivity {
 

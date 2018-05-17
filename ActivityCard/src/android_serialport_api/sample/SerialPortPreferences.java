@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.byid.android.ByIdActivity;
 
 import android_serialport_api.SerialPortFinder;
+import android_serialport_api.sample.base.Application;
 
 public class SerialPortPreferences extends PreferenceActivity {
 

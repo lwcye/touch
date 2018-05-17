@@ -1,2 +1,2 @@
-include ':app', ':X5WebDemo', ':VasSonic', ':ActivityCard'
+include ':app', ':X5WebDemo', ':VasSonic', ':ActivityCard', ':myinstallapk'
 include ':m2ON_OFF_DEMO'

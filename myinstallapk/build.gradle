@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
+
+
+    defaultConfig {
+        applicationId "com.cmcc.myinstallapk"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    // 工具
+    compile 'com.blankj:utilcode:1.14.2'
+    //RxJava
+    compile 'io.reactivex:rxjava:1.2.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    //Xutils
+    compile 'org.xutils:xutils:3.5.0'
+    // 文件下载(file downloader)
+    compile 'com.liulishuo.filedownloader:library:1.4.1'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile project(':m2ON_OFF_DEMO')
+}

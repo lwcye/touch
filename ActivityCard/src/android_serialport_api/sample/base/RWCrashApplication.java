@@ -1,4 +1,4 @@
-package android_serialport_api.sample;
+package android_serialport_api.sample.base;
 
 
 import com.blankj.utilcode.util.CrashUtils;
