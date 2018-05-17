@@ -7,13 +7,6 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* .idea\
-* .idea\markdown-navigator\
-* .idea\markdown-navigator\profiles_settings.xml
-* .idea\misc.xml
-* .idea\modules.xml
-* .idea\myserial.iml
-* .idea\workspace.xml
 * cvr100b
 * proguard.cfg
 
@@ -24,9 +17,11 @@ Eclipse projects. Here's how the projects were restructured:
 
 * AndroidManifest.xml => myserial\src\main\AndroidManifest.xml
 * assets\ => myserial\src\main\assets
-* jni\ => myserial\src\main\jni\
+* libs\armeabi-v7a\libserial_port.so => myserial\src\main\jniLibs\armeabi-v7a\libserial_port.so
 * libs\armeabi-v7a\libwltdecode.so => myserial\src\main\jniLibs\armeabi-v7a\libwltdecode.so
+* libs\armeabi\libserial_port.so => myserial\src\main\jniLibs\armeabi\libserial_port.so
 * libs\armeabi\libwltdecode.so => myserial\src\main\jniLibs\armeabi\libwltdecode.so
+* libs\x86\libserial_port.so => myserial\src\main\jniLibs\x86\libserial_port.so
 * libs\x86\libwltdecode.so => myserial\src\main\jniLibs\x86\libwltdecode.so
 * res\ => myserial\src\main\res\
 * src\ => myserial\src\main\java\

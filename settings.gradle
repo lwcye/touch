@@ -1,3 +1,2 @@
-include ':app', ':X5WebDemo', ':VasSonic'
+include ':app', ':X5WebDemo', ':VasSonic', ':ActivityCard'
 include ':m2ON_OFF_DEMO'
-include ':myserial'

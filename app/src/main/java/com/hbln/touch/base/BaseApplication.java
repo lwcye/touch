@@ -8,12 +8,12 @@ import android.support.multidex.MultiDex;
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
-import com.by100.util.RWCrashHandler;
 import com.hbln.touch.BuildConfig;
 
 import org.xutils.x;
 
 import java.io.File;
+
 
 /**
  * <p>describe</p><br>
@@ -35,8 +35,6 @@ public class BaseApplication extends Application {
         Utils.init(this);
         sBaseApplication = this;
         init();
-        RWCrashHandler crashHandler = RWCrashHandler.getInstance();
-        crashHandler.init(this);
     }
 
     @Override
