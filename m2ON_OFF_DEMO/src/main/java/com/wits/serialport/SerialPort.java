@@ -23,68 +23,71 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import android.util.Log;
 
 
 public class SerialPort {
-	/*======================================*/
-	/*======================================*/
+    /*======================================*/
+    /*======================================*/
 	/*此文件必须放到包"com.wits.serialport"中*/
 	/*======================================*/
 	/*======================================*/
-	private static final String TAG = "SerialPort";
+    private static final String TAG = "SerialPort";
 
-	/*
-	 * Do not remove or rename the field mFd: it is used by native method close();
-	 */
-	private FileDescriptor mFd;
-	private FileInputStream mFileInputStream;
-	private FileOutputStream mFileOutputStream;
+    /*
+     * Do not remove or rename the field mFd: it is used by native method close();
+     */
+    private FileDescriptor mFd;
+    private FileInputStream mFileInputStream;
+    private FileOutputStream mFileOutputStream;
 
-	public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
+    public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
 
 		/* Check access permission */
-		if (!device.canRead() || !device.canWrite()) {
-			Log.e(TAG,"SerialPort not read or write!");
-			try {
+        if (!device.canRead() || !device.canWrite()) {
+            Log.e(TAG, "SerialPort not read or write!");
+            try {
 				/* Missing read/write permission, trying to chmod the file */
-				Process su;
-				su = Runtime.getRuntime().exec("/system/xbin/su");
-				String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
-						+ "exit\n";
-				su.getOutputStream().write(cmd.getBytes());
-				if ((su.waitFor() != 0) || !device.canRead()
-						|| !device.canWrite()) {
-					throw new SecurityException();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new SecurityException();
-			}
-		}
-		Log.i(TAG,"SerialPort can read or write!" + device.getAbsolutePath().toString());
-		mFd = open(device.getAbsolutePath().toString(), baudrate, flags);
-		if (mFd == null) {
-			Log.e(TAG, "SerialPort native open return null!");
-			throw new IOException();
-		}
-		mFileInputStream = new FileInputStream(mFd);
-		mFileOutputStream = new FileOutputStream(mFd);
-	}
+                Process su;
+                su = Runtime.getRuntime().exec("/system/xbin/su");
+                String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
+                        + "exit\n";
+                su.getOutputStream().write(cmd.getBytes());
+                if ((su.waitFor() != 0) || !device.canRead()
+                        || !device.canWrite()) {
+                    throw new SecurityException();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SecurityException();
+            }
+        }
+        Log.i(TAG, "SerialPort can read or write!" + device.getAbsolutePath().toString());
+        mFd = open(device.getAbsolutePath().toString(), baudrate, flags);
+        if (mFd == null) {
+            Log.e(TAG, "SerialPort native open return null!");
+            throw new IOException();
+        }
+        mFileInputStream = new FileInputStream(mFd);
+        mFileOutputStream = new FileOutputStream(mFd);
+    }
 
-	// Getters and setters
-	public InputStream getInputStream() {
-		return mFileInputStream;
-	}
+    // Getters and setters
+    public InputStream getInputStream() {
+        return mFileInputStream;
+    }
 
-	public OutputStream getOutputStream() {
-		return mFileOutputStream;
-	}
+    public OutputStream getOutputStream() {
+        return mFileOutputStream;
+    }
 
-	// JNI
-	private native static FileDescriptor open(String path, int baudrate, int flags);
-	public native void close();
-	static {
-		System.loadLibrary("serial_port");
-	}
+    // JNI
+    private native static FileDescriptor open(String path, int baudrate, int flags);
+
+    public native void close();
+
+    static {
+        System.loadLibrary("serial_port_0");
+    }
 }

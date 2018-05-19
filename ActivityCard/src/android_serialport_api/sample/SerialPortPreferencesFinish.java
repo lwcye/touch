@@ -27,12 +27,11 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.byid.android.ByIdActivity;
-import com.google.gson.Gson;
 
 import android_serialport_api.SerialPortFinder;
 import android_serialport_api.sample.base.Application;
 
-public class SerialPortPreferences extends PreferenceActivity {
+public class SerialPortPreferencesFinish extends PreferenceActivity {
 
     private Application mApplication;
     private SerialPortFinder mSerialPortFinder;
@@ -42,7 +41,6 @@ public class SerialPortPreferences extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         mApplication = (Application) getApplication();
         mSerialPortFinder = mApplication.mSerialPortFinder;
@@ -97,11 +95,8 @@ public class SerialPortPreferences extends PreferenceActivity {
         devices.setEntryValues(entryValues);
         LogUtils.e(devices.getValue());
         devices.setSummary(devices.getValue());
-        LogUtils.e(new Gson().toJson(entries));
-        LogUtils.e(new Gson().toJson(entryValues));
         devices.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                LogUtils.e((String) newValue);
                 preference.setSummary((String) newValue);
                 return true;
             }
@@ -117,6 +112,6 @@ public class SerialPortPreferences extends PreferenceActivity {
                 return true;
             }
         });
+        finish();
     }
-
 }

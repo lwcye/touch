@@ -7,7 +7,7 @@
 
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="19"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -36,16 +36,39 @@
 
         </activity>
         <activity android:name="SerialPortPreferences"></activity>
+        <activity android:name="SerialPortPreferencesFinish"></activity>
         <activity android:name="ConsoleActivity"></activity>
         <activity android:name="SendingActivity"></activity>
         <activity android:name="dianyuan"></activity>
-        <activity android:name="com.byid.android.TestActivity">
+        <activity android:name="com.byid.activity.TestActivity">
+
+        </activity>
+        <activity
+            android:name="com.byid.activity.HomeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="lwc.hbln.com"
+                    android:pathPrefix="/openwith"
+                    android:scheme="lwc" />
+            </intent-filter>
         </activity>
+
+        <service
+            android:name="com.byid.service.SyncService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
