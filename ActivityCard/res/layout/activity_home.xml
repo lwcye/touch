@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="20px">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:gravity="center"
             android:text="复盛镇基层事务公开监督平台"
             android:textColor="@color/white"
-            android:textSize="26px" />
+            android:textSize="32px" />
 
         <Space
             android:layout_width="wrap_content"
@@ -27,9 +28,7 @@
 
         <View
             android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="40px"
-            android:layout_marginTop="40px"
+            android:layout_height="30px"
             android:background="@color/white" />
 
         <TextView
@@ -43,51 +42,82 @@
 
         <View
             android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="40px"
-            android:layout_marginTop="40px"
+            android:layout_height="30px"
             android:background="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:text="系统报警"
+            android:textColor="@color/white"
+            android:textSize="18px" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="30px"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="50px"
+            android:text="退出"
+            android:textColor="@color/white"
+            android:textSize="18px" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:scaleType="centerInside"
             android:src="@drawable/img_search" />
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="400px"
-                android:layout_marginLeft="100px"
-                android:layout_marginRight="300px"
-                android:layout_marginTop="150px"
+                android:layout_width="450px"
+                android:layout_height="450px"
+                android:layout_gravity="center"
                 android:background="#3000"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/btn_read"
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_read_user_icon"
+                        android:layout_width="60px"
+                        android:layout_height="80px"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/tv_read"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="读取二代证卡" />
-                </FrameLayout>
+                        android:text="读取二代证卡"
+                        android:textColor="@color/white"
+                        android:textSize="18px" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -97,6 +127,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:padding="20px"
                     android:text="如果您在登录过程中遇到密码框无法输入或页面异常错误，请拨打电话 13455795325。"
                     android:textColor="@color/white"

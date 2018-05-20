@@ -8,5 +8,5 @@
 /.idea
 /captures
 .externalNativeBuild
-/backup
-
+/backup/MyAndroidSignKey.jks
+/backup/release

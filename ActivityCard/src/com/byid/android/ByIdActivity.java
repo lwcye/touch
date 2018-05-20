@@ -370,9 +370,20 @@ public class ByIdActivity extends SerialPortActivity {
                 bitmap = BitmapFactory.decodeResource(
                         getResources(), R.drawable.face);
             }
-            ToastUtils.showLong(text.toString() + ",是否有照片=" + (bitmap != null));
+            onReadSfCode(decodeInfo, text, bitmap);
         }
     };
+
+    /**
+     * 读取身份证响应的数据
+     *
+     * @param decodeInfo 身份证所有信息
+     * @param text       提示信息
+     * @param bitmap     图片
+     */
+    public void onReadSfCode(String[] decodeInfo, StringBuilder text, Bitmap bitmap) {
+
+    }
 
     @Override
     protected void onResume() {
@@ -428,8 +439,6 @@ public class ByIdActivity extends SerialPortActivity {
                         } catch (Exception e) {
                             // TODO: handle exception
                         }
-
-
                     }
                 }, 500);
 

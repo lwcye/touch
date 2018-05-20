@@ -1,9 +1,13 @@
 package com.byid.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -25,11 +29,17 @@ import rx.schedulers.Schedulers;
  */
 
 public class HomeActivity extends ByIdActivity implements View.OnClickListener {
+    private AppCompatImageView mIvReadUserIcon;
+    /**
+     * 读取二代证卡
+     */
+    private AppCompatTextView mTvRead;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        findViewById(R.id.btn_read).setOnClickListener(this);
+        initView();
         Observable.just(null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,6 +67,18 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
     protected void onRestart() {
         super.onRestart();
         readSfCode();
+    }
+
+    @Override
+    public void onReadSfCode(String[] decodeInfo, StringBuilder text, Bitmap bitmap) {
+        super.onReadSfCode(decodeInfo, text, bitmap);
+        if (decodeInfo.length > 5 && !TextUtils.isEmpty(decodeInfo[5])) {
+            if (bitmap != null) {
+                mIvReadUserIcon.setVisibility(View.VISIBLE);
+                mIvReadUserIcon.setImageBitmap(bitmap);
+            }
+        }
+        mTvRead.setText(text);
     }
 
     /**
@@ -170,10 +192,10 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_read:
-                readSfCode();
-                break;
-        }
+    }
+
+    private void initView() {
+        mIvReadUserIcon = (AppCompatImageView) findViewById(R.id.iv_read_user_icon);
+        mTvRead = (AppCompatTextView) findViewById(R.id.tv_read);
     }
 }
