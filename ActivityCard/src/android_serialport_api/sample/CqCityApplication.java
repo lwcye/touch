@@ -89,7 +89,7 @@ import rx.Observable;
  * @note -
  */
 public class CqCityApplication extends BaseApplication {
-    /** 请求码 -- 通过相机获取照片 */
+    /** 请求码 --  */
     private Object mSessionLock = new Object();
 
     @Override
