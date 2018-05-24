@@ -12,6 +12,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     //Xutils
     compile 'org.xutils:xutils:3.5.0'
+    //浏览器
+    compile 'com.tencent.sonic:sdk:3.0.0'
+    compile 'com.github.lzyzsd:jsbridge:1.0.4'
     // 文件下载(file downloader)
     compile 'com.liulishuo.filedownloader:library:1.4.1'
     compile 'com.google.code.gson:gson:2.8.2'
@@ -25,9 +28,11 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 19
-        versionCode 2
-        versionName "1.0.1"
-
+        versionCode 3
+        versionName "1.0.2"
+        jackOptions {
+            enabled true
+        }
         // ndk平台选项
         ndk {
             "armeabi-v7a"
@@ -35,6 +40,10 @@ android {
         // 打包资源种类配置
         resConfigs "zh-rCN", "zh-rHK", "zh-rTW", "en"
 
+        compileOptions {
+            targetCompatibility 1.8
+            sourceCompatibility 1.8
+        }
         // 单元测试
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

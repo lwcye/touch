@@ -86,6 +86,16 @@ public class ByIdActivity extends SerialPortActivity {
         new Thread(new ThreadRun()).start();
     }
 
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
     private class ThreadRun implements Runnable {
 
         @Override
