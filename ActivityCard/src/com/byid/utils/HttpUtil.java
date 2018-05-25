@@ -1,10 +1,17 @@
 package com.byid.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.byid.activity.BrowserActivity;
 import com.byid.model.ConfigBean;
 import com.byid.model.SyncBean;
 import com.byid.model.UpdateBean;
+import com.byid.model.UserInfoBean;
 import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
@@ -23,8 +30,14 @@ import rx.schedulers.Schedulers;
  * Created by 41569 on 2018/5/19.
  */
 public class HttpUtil {
-    //HOST
-    private String HTTP_HOST = "http://223.113.65.26:10080/newswulian/public/api";
+    //mac
+    public static final String MAC_KEY = "mac";
+    //mac
+    public static final String MAC_VALUE = DeviceUtils.getMacAddress();
+    //更新状态
+    public static final String URL_CHANGE_STATUS = "/amain/romstatus";
+    //获得配置文件
+    public static final String URL_CONFIG = "/logintoken/getrooturl";
     //config time
     private static final String SP_HOST = "host";
     //config time
@@ -33,38 +46,31 @@ public class HttpUtil {
     private static final String SP_TIME_CONFIG = "time_config";
     //Token
     private static final String TOKEN_KEY = "api_cmtoken";
-
     private static final String TOKEN_VALUE = "HBAPI@20180517";
-    //mac
-    public static final String MAC_KEY = "mac";
-    //mac
-    public static final String MAC_VALUE = DeviceUtils.getMacAddress();
     //url 同步数据
     private static final String URL_SYNC = "/amain/syncinfo";
     //更新APK
     private static final String URL_UPDATE_ROM = "/amain/updaterom";
-    //更新状态
-    public static final String URL_CHANGE_STATUS = "/amain/romstatus";
-    //获得配置文件
-    public static final String URL_CONFIG = "/logintoken/getrooturl";
+    private static final HttpUtil ourInstance = new HttpUtil();
+    //HOST
+    private String HTTP_HOST = "http://223.113.65.26:10080/newswulian/public/api";
     //同步的请求
     private Subscription mSyncObserver;
     //配置的请求
     private Subscription mConfigObserver;
-    private static final HttpUtil ourInstance = new HttpUtil();
+
+    private HttpUtil() {
+    }
 
     public static HttpUtil getInstance() {
         return ourInstance;
-    }
-
-    private HttpUtil() {
     }
 
     /**
      * 请求同步
      *
      * @param time 时间
-     * @param b    是否强制更新
+     * @param b 是否强制更新
      */
     public void sync(int time, boolean b) {
         if (mSyncObserver == null) {
@@ -102,7 +108,7 @@ public class HttpUtil {
      * 请求配置参数
      *
      * @param time 间隔时间
-     * @param b    是否强制更新
+     * @param b 是否强制更新
      */
     public void getConfig(int time, boolean b) {
         if (mConfigObserver == null) {
@@ -226,6 +232,42 @@ public class HttpUtil {
             @Override
             void onFail(Throwable ex) {
                 LogUtils.e(ex.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 获得配置文件
+     */
+    public void login(String username, String password, Activity activity) {
+        if (TextUtils.isEmpty(username)) {
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            int length = username.length();
+            password = username.substring(length - 6, length);
+        }
+        RequestParams params = new RequestParams("http://223.113.65.26:10080/cqfengjie/public/api/logintoken/login");
+        params.addBodyParameter("username", username);
+        params.addBodyParameter("password", password);
+        params.addBodyParameter("api_token", "HBAPI@20180516fengjie");
+        x.http().post(params, new StringCallback() {
+            @Override
+            void onNext(String result) {
+                UserInfoBean userInfoBean = new Gson().fromJson(result, UserInfoBean.class);
+                if (userInfoBean.status == 1) {
+                    String url = "http://127.0.0.1/binhai/#/home/myMoney/huiminzijin?userinfo=" + userInfoBean.info.toString();
+                    LogUtils.e(url);
+                    activity.startActivity(new Intent(activity, BrowserActivity.class)
+                            .putExtra(BrowserActivity.PARAM_URL, url));
+                } else {
+                    ToastUtils.showShort(userInfoBean.info.toString());
+                }
+            }
+
+            @Override
+            void onFail(Throwable ex) {
+                ToastUtils.showShort("网络错误");
             }
         });
     }

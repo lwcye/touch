@@ -46,6 +46,7 @@
         <activity
             android:name="com.byid.activity.HomeActivity"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

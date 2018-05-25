@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.byid.android.ByIdActivity;
@@ -33,15 +36,24 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
     /**
      * 读取二代证卡
      */
-    private AppCompatTextView mTvRead;
-    //是否已经跳转
-    private boolean isJump = false;
+    private AppCompatButton mBtnRead;
+    /** 身份证扫描 */
+    private Button mBtnHomeRead;
+    /** 用户登陆 */
+    private Button mBtnHomePwd;
+    private LinearLayout mLlHomeRead;
+    /** 输入用户身份证 */
+    private EditText mEtHomeUsername;
+    /** 输入用户密码 */
+    private EditText mEtHomePwd;
+    /** 登陆 */
+    private AppCompatButton mBtnLogin;
+    private LinearLayout mLlHomePwd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        isJump = false;
         initView();
         Observable.just(null)
                 .subscribeOn(Schedulers.io())
@@ -69,30 +81,14 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-        isJump = false;
-        mTvRead.setText("读取二代证卡");
-        mIvReadUserIcon.setBackgroundResource(R.drawable.face);
-        mIvReadUserIcon.setVisibility(View.GONE);
-        readSfCode();
     }
 
     @Override
     public void onReadSfCode(String[] decodeInfo, StringBuilder text, Bitmap bitmap) {
         super.onReadSfCode(decodeInfo, text, bitmap);
-        if (isJump) {
-            return;
-        }
         if (decodeInfo.length > 5 && !TextUtils.isEmpty(decodeInfo[5])) {
-            if (bitmap != null) {
-                mIvReadUserIcon.setVisibility(View.VISIBLE);
-                mIvReadUserIcon.setImageBitmap(bitmap);
-            }
-            String url = "http://127.0.0.1/binhai/#/home/myMoney/huiminzijin?userinfo=" + decodeInfo[5];
-            startActivity(new Intent(this, BrowserActivity.class)
-                    .putExtra(BrowserActivity.PARAM_URL, url));
-            isJump = true;
+            HttpUtil.getInstance().login(decodeInfo[5], null, this);
         }
-        mTvRead.setText(text);
     }
 
     /**
@@ -206,10 +202,54 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_home_read:
+//                mBtnHomeRead.setBackgroundColor(Color.parseColor("#3fff"));
+//                mBtnHomePwd.setBackgroundColor(Color.parseColor("#3000"));
+                mLlHomeRead.setVisibility(View.VISIBLE);
+                mLlHomePwd.setVisibility(View.GONE);
+                break;
+            case R.id.btn_home_pwd:
+//                mBtnHomePwd.setBackgroundColor(Color.parseColor("#3fff"));
+//                mBtnHomeRead.setBackgroundColor(Color.parseColor("#3000"));
+                mLlHomeRead.setVisibility(View.GONE);
+                mLlHomePwd.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_read:
+                readSfCode();
+                break;
+            case R.id.btn_login:
+                String username = mEtHomeUsername.getText().toString().trim();
+                if (TextUtils.isEmpty(username)) {
+                    ToastUtils.showLong("请输入用户身份证");
+                    break;
+                }
+                String password = mEtHomePwd.getText().toString().trim();
+                if (TextUtils.isEmpty(password)) {
+                    ToastUtils.showLong("请输入登陆密码");
+                    break;
+                }
+                HttpUtil.getInstance().login(username, password, this);
+                break;
+            default:
+                break;
+        }
     }
 
+    @Override
     public void initView() {
         mIvReadUserIcon = (AppCompatImageView) findViewById(R.id.iv_read_user_icon);
-        mTvRead = (AppCompatTextView) findViewById(R.id.tv_read);
+        mBtnRead = (AppCompatButton) findViewById(R.id.btn_read);
+        mBtnHomeRead = (Button) findViewById(R.id.btn_home_read);
+        mBtnHomeRead.setOnClickListener(this);
+        mBtnHomePwd = (Button) findViewById(R.id.btn_home_pwd);
+        mBtnHomePwd.setOnClickListener(this);
+        mBtnRead.setOnClickListener(this);
+        mLlHomeRead = (LinearLayout) findViewById(R.id.ll_home_read);
+        mEtHomeUsername = (EditText) findViewById(R.id.et_home_username);
+        mEtHomePwd = (EditText) findViewById(R.id.et_home_pwd);
+        mBtnLogin = (AppCompatButton) findViewById(R.id.btn_login);
+        mBtnLogin.setOnClickListener(this);
+        mLlHomePwd = (LinearLayout) findViewById(R.id.ll_home_pwd);
     }
 }

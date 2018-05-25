@@ -36,6 +36,7 @@ public class RWCrashApplication extends Application {
 
         Utils.init(this);
 
+        // TODO: lwc 2018/5/25 改LOG的配置
         LogUtils.getConfig().setLogSwitch(false);
         LogUtils.getConfig().setGlobalTag("cqcity");
         LogUtils.getConfig().setConsoleFilter(LogUtils.D);
