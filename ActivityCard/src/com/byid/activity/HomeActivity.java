@@ -34,11 +34,14 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
      * 读取二代证卡
      */
     private AppCompatTextView mTvRead;
+    //是否已经跳转
+    private boolean isJump = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        isJump = false;
         initView();
         Observable.just(null)
                 .subscribeOn(Schedulers.io())
@@ -66,17 +69,28 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
+        isJump = false;
+        mTvRead.setText("读取二代证卡");
+        mIvReadUserIcon.setBackgroundResource(R.drawable.face);
+        mIvReadUserIcon.setVisibility(View.GONE);
         readSfCode();
     }
 
     @Override
     public void onReadSfCode(String[] decodeInfo, StringBuilder text, Bitmap bitmap) {
         super.onReadSfCode(decodeInfo, text, bitmap);
+        if (isJump) {
+            return;
+        }
         if (decodeInfo.length > 5 && !TextUtils.isEmpty(decodeInfo[5])) {
             if (bitmap != null) {
                 mIvReadUserIcon.setVisibility(View.VISIBLE);
                 mIvReadUserIcon.setImageBitmap(bitmap);
             }
+            String url = "http://127.0.0.1/binhai/#/home/myMoney/huiminzijin?userinfo=" + decodeInfo[5];
+            startActivity(new Intent(this, BrowserActivity.class)
+                    .putExtra(BrowserActivity.PARAM_URL, url));
+            isJump = true;
         }
         mTvRead.setText(text);
     }
@@ -89,7 +103,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             isOpen = true;
             source = true;
-            ToastUtils.showLong("开始读卡");
+            ToastUtils.showLong("读取二代证卡");
             return;
 
         }
@@ -97,7 +111,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             //PowerOperate.enableRIFID_Module_5Volt();
             source = true;
-            ToastUtils.showLong("开始读卡");
+            ToastUtils.showLong("读取二代证卡");
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -164,7 +178,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             PowerOperate.enableRIFID_Module_5Volt();
             source = true;
-            ToastUtils.showLong("开始读卡");
+            ToastUtils.showLong("读取二代证卡");
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -194,7 +208,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
     public void onClick(View view) {
     }
 
-    private void initView() {
+    public void initView() {
         mIvReadUserIcon = (AppCompatImageView) findViewById(R.id.iv_read_user_icon);
         mTvRead = (AppCompatTextView) findViewById(R.id.tv_read);
     }

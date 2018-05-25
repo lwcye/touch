@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <script type="text/javascript" src="/wcs/scripts/jquery.js"></script> -->
+    <title>
+        js调用java
+    </title>
+    <style type="text/css">
+        div {
+            margin-top:30px auto;
+        }
+        input{
+            border-radius:5px;
+            padding:5px;
+            margin:5px;
+            outline:none;
+        }
+
+
+    </style>
+</head>
+
+<body onload="getUserInfo();">
+<p id="show">
+    测试结果
+</p>
+<div>
+    <h3>跳转其他界面</h3>
+    <p>
+        <input type="button" value="打开首页" onclick="openCqCity();">
+    </p>
+</div>
+<div>
+    <h3>浏览器打开</h3>
+    <p>
+        <br/>
+        <a href="lwc://lwc.hbln.com/openwith">重庆城公交大师</a>
+    </p>
+</div>
+</body>
+
+<script>
+    function openCqCity() {
+        // 打开重庆城
+        var iframe = document.createElement('iframe');
+        var body = document.body;
+        iframe.style.cssText = 'display:none;width=0;height=0';
+
+        // 立即打开的按钮
+        if (/MicroMessenger/gi.test(navigator.userAgent)) {
+            // 引导用户在浏览器中打开
+            alert("请在浏览器打开");
+        } else {
+            body.appendChild(iframe);
+            iframe.src = ' lwc://lwc.hbln.com/openwith';
+        }
+    }
+
+</script>
+</html>

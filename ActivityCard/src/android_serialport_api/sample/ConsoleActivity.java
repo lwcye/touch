@@ -64,6 +64,16 @@ public class ConsoleActivity extends SerialPortActivity {
 	}
 
 	@Override
+	public void initView() {
+
+	}
+
+	@Override
+	public void initData() {
+
+	}
+
+	@Override
 	protected void onDataReceived(final byte[] buffer, final int size) {
 		runOnUiThread(new Runnable() {
 			public void run() {

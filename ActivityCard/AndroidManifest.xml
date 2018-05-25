@@ -64,6 +64,11 @@
                     android:scheme="lwc" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.byid.activity.BrowserActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
 
         <service
             android:name="com.byid.service.SyncService"

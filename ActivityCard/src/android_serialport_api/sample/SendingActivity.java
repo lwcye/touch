@@ -16,10 +16,10 @@
 
 package android_serialport_api.sample;
 
+import android.os.Bundle;
+
 import java.io.IOException;
 import java.util.Arrays;
-
-import android.os.Bundle;
 
 public class SendingActivity extends SerialPortActivity {
 
@@ -36,6 +36,16 @@ public class SendingActivity extends SerialPortActivity {
 			mSendingThread = new SendingThread();
 			mSendingThread.start();
 		}
+	}
+
+	@Override
+	public void initView() {
+
+	}
+
+	@Override
+	public void initData() {
+
 	}
 
 	@Override
