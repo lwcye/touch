@@ -46,8 +46,8 @@
         <activity
             android:name="com.byid.activity.HomeActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,6 +70,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
+        <activity
+            android:name="com.byid.activity.FullScreenActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <service
             android:name="com.byid.service.SyncService"

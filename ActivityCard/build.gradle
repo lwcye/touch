@@ -19,6 +19,7 @@ dependencies {
     compile 'com.liulishuo.filedownloader:library:1.4.1'
     compile 'com.google.code.gson:gson:2.8.2'
     compile project(':m2ON_OFF_DEMO')
+    compile files('libs/tbs_sdk_thirdapp_v3.6.0.1234_43608_sharewithdownload_withoutGame_obfs_20180510_111111.jar')
 }
 
 android {
@@ -28,8 +29,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 19
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
         jackOptions {
             enabled true
         }

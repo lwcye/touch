@@ -14,4 +14,16 @@ package com.byid.model;
 public class UserInfoBean {
     public int status;
     public Object info;
+
+    public static class InfoBean {
+        public String id;
+        public String username;
+        public String nickname;
+        public String sfid;
+        public String townsid;
+        public String sex;
+        public String zu;
+        public String tname;
+        public String uid;
+    }
 }

@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.byid.activity.BrowserActivity;
+import com.byid.activity.FullScreenActivity;
 import com.byid.model.ConfigBean;
 import com.byid.model.SyncBean;
 import com.byid.model.UpdateBean;
@@ -70,7 +71,7 @@ public class HttpUtil {
      * 请求同步
      *
      * @param time 时间
-     * @param b 是否强制更新
+     * @param b    是否强制更新
      */
     public void sync(int time, boolean b) {
         if (mSyncObserver == null) {
@@ -108,7 +109,7 @@ public class HttpUtil {
      * 请求配置参数
      *
      * @param time 间隔时间
-     * @param b 是否强制更新
+     * @param b    是否强制更新
      */
     public void getConfig(int time, boolean b) {
         if (mConfigObserver == null) {
@@ -254,11 +255,13 @@ public class HttpUtil {
         x.http().post(params, new StringCallback() {
             @Override
             void onNext(String result) {
-                UserInfoBean userInfoBean = new Gson().fromJson(result, UserInfoBean.class);
+                Gson gson = new Gson();
+                UserInfoBean userInfoBean = gson.fromJson(result, UserInfoBean.class);
                 if (userInfoBean.status == 1) {
-                    String url = "http://127.0.0.1/binhai/#/home/myMoney/huiminzijin?userinfo=" + userInfoBean.info.toString();
+
+                    String url = "http://223.113.65.26:10080/cqfengjiechumo/#/home/myMoney/huiminzijin?userinfo=" + gson.toJson(gson.fromJson(userInfoBean.info.toString(), UserInfoBean.InfoBean.class));
                     LogUtils.e(url);
-                    activity.startActivity(new Intent(activity, BrowserActivity.class)
+                    activity.startActivity(new Intent(activity, FullScreenActivity.class)
                             .putExtra(BrowserActivity.PARAM_URL, url));
                 } else {
                     ToastUtils.showShort(userInfoBean.info.toString());

@@ -1,19 +1,7 @@
 package com.byid.android;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.UUID;
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,25 +11,20 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.by100.util.AppConfig;
+import com.by100.util.CopyFileToSD;
+import com.by100.util.NationDeal;
+import com.ivsign.android.IDCReader.IDCReaderSDK;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.UUID;
 
 import android_serialport_api.sample.PowerOperate;
 import android_serialport_api.sample.R;
 import android_serialport_api.sample.SerialPortActivity;
 import android_serialport_api.sample.SerialPortPreferences;
-import android_serialport_api.sample.dianyuan;
-
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.by100.util.AppConfig;
-import com.by100.util.CopyFileToSD;
-import com.by100.util.NationDeal;
-import com.ivsign.android.IDCReader.IDCReaderSDK;
 
 
 public class ByIdActivity extends SerialPortActivity {
@@ -157,20 +140,13 @@ public class ByIdActivity extends SerialPortActivity {
                     if (recData[i] == myData[i]) {
                         not++;
                     }
-
-
                 }
-
-
                 //有指纹数据整合
 
                 for (int i = 0; i < 7; i++) {
-
                     if (recData[i] == myData_b[i]) {
                         exist++;
                     }
-
-
                 }
 
                 //判断串口读取到的数据，如果是有指纹的身份证数据或是无指纹的身份证数据就解析

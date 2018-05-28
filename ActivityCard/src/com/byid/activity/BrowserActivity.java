@@ -196,7 +196,7 @@ public class BrowserActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    private static class OfflinePkgSessionConnection extends SonicSessionConnection {
+    public static class OfflinePkgSessionConnection extends SonicSessionConnection {
 
         private final WeakReference<Context> context;
 

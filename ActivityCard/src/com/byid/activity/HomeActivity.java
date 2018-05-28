@@ -23,8 +23,6 @@ import android_serialport_api.sample.SerialPortPreferences;
 import android_serialport_api.sample.SerialPortPreferencesFinish;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -37,16 +35,26 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
      * 读取二代证卡
      */
     private AppCompatButton mBtnRead;
-    /** 身份证扫描 */
+    /**
+     * 身份证扫描
+     */
     private Button mBtnHomeRead;
-    /** 用户登陆 */
+    /**
+     * 用户登陆
+     */
     private Button mBtnHomePwd;
     private LinearLayout mLlHomeRead;
-    /** 输入用户身份证 */
+    /**
+     * 输入用户身份证
+     */
     private EditText mEtHomeUsername;
-    /** 输入用户密码 */
+    /**
+     * 输入用户密码
+     */
     private EditText mEtHomePwd;
-    /** 登陆 */
+    /**
+     * 登陆
+     */
     private AppCompatButton mBtnLogin;
     private LinearLayout mLlHomePwd;
 
@@ -55,32 +63,14 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
-        Observable.just(null)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        setting();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        ToastUtils.showLong(throwable.getMessage());
-                    }
-                }, new Action0() {
-                    @Override
-                    public void call() {
-                        ToastUtils.showLong("read");
-                        readSfCode();
-                    }
-                });
         HttpUtil.getInstance().getConfig(10, true);
+//        HttpUtil.getInstance().login("51222619550110641X",null,this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        mBtnRead.setEnabled(true);
     }
 
     @Override
@@ -99,7 +89,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             isOpen = true;
             source = true;
-            ToastUtils.showLong("读取二代证卡");
+            ToastUtils.showShort("开始读卡");
             return;
 
         }
@@ -107,7 +97,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             //PowerOperate.enableRIFID_Module_5Volt();
             source = true;
-            ToastUtils.showLong("读取二代证卡");
+            ToastUtils.showShort("开始读卡");
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -141,7 +131,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
                         try {
                             // btread.performClick();
                             //PowerOperate.disableRIFID_Module_5Volt();
-                            ToastUtils.showLong("已经关闭");
+                            ToastUtils.showShort("已经关闭");
                         } catch (Exception e) {
                         }
                     }
@@ -161,7 +151,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
                             try {
                                 //btread.performClick();
                                 PowerOperate.disableRIFID_Module_5Volt();
-                                ToastUtils.showLong("已经关闭");
+                                ToastUtils.showShort("已经关闭");
                             } catch (Exception e) {
                             }
                         }
@@ -174,7 +164,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
 
             PowerOperate.enableRIFID_Module_5Volt();
             source = true;
-            ToastUtils.showLong("读取二代证卡");
+            ToastUtils.showShort("开始读卡");
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -216,7 +206,13 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
                 mLlHomePwd.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_read:
-                readSfCode();
+                Observable.just(null)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(o -> setting(), throwable -> ToastUtils.showLong(throwable.getMessage()), () -> {
+                            readSfCode();
+                            mBtnRead.setEnabled(false);
+                        });
                 break;
             case R.id.btn_login:
                 String username = mEtHomeUsername.getText().toString().trim();
@@ -245,6 +241,7 @@ public class HomeActivity extends ByIdActivity implements View.OnClickListener {
         mBtnHomePwd = (Button) findViewById(R.id.btn_home_pwd);
         mBtnHomePwd.setOnClickListener(this);
         mBtnRead.setOnClickListener(this);
+        mBtnRead.setEnabled(true);
         mLlHomeRead = (LinearLayout) findViewById(R.id.ll_home_read);
         mEtHomeUsername = (EditText) findViewById(R.id.et_home_username);
         mEtHomePwd = (EditText) findViewById(R.id.et_home_pwd);
