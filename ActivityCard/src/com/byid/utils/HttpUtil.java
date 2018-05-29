@@ -8,7 +8,6 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.byid.activity.BrowserActivity;
-import com.byid.activity.FullScreenActivity;
 import com.byid.model.ConfigBean;
 import com.byid.model.SyncBean;
 import com.byid.model.UpdateBean;
@@ -261,7 +260,7 @@ public class HttpUtil {
 
                     String url = "http://223.113.65.26:10080/cqfengjiechumo/#/home/myMoney/huiminzijin?userinfo=" + gson.toJson(gson.fromJson(userInfoBean.info.toString(), UserInfoBean.InfoBean.class));
                     LogUtils.e(url);
-                    activity.startActivity(new Intent(activity, FullScreenActivity.class)
+                    activity.startActivity(new Intent(activity, BrowserActivity.class)
                             .putExtra(BrowserActivity.PARAM_URL, url));
                 } else {
                     ToastUtils.showShort(userInfoBean.info.toString());
