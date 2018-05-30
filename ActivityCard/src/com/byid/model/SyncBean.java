@@ -21,5 +21,6 @@ public class SyncBean {
         public String create_time;
         public int update_time;
         public String beizhu;
+        public String cmweb;
     }
 }

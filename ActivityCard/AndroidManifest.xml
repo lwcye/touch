@@ -72,7 +72,9 @@
             android:screenOrientation="landscape" />
         <activity
             android:name="com.byid.activity.FullScreenActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
 
         <service
             android:name="com.byid.service.SyncService"

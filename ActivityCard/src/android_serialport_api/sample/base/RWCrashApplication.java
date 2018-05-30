@@ -38,10 +38,11 @@ public class RWCrashApplication extends Application {
         Utils.init(this);
 
         // TODO: lwc 2018/5/25 改LOG的配置
-        LogUtils.getConfig().setLogSwitch(false);
+        boolean isLog = true;
+        LogUtils.getConfig().setLogSwitch(isLog);
+        LogUtils.getConfig().setLog2FileSwitch(isLog);
         LogUtils.getConfig().setGlobalTag("cqcity");
         LogUtils.getConfig().setConsoleFilter(LogUtils.D);
-        LogUtils.getConfig().setLog2FileSwitch(true);
 
         File file = new File(getExternalCacheDir() + "/crash");
         if (!file.exists()) {
