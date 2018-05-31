@@ -58,7 +58,7 @@ public class HttpUtil {
     //触摸屏的TOKEN
     private static final String SP_CM_TOKEN = "cm_token";
     //Token
-    private static final String TOKEN_KEY = "api_token";
+    private static final String TOKEN_KEY = "api_cmtoken";
     private static final String TOKEN_VALUE = "HBAPI@20180517";
 
     private static final HttpUtil ourInstance = new HttpUtil();
@@ -302,7 +302,7 @@ public class HttpUtil {
         RequestParams params = new RequestParams(API_UTL + "/public/api/logintoken/login");
         params.addBodyParameter("username", username);
         params.addBodyParameter("password", password);
-        params.addBodyParameter(TOKEN_KEY, CM_TOKEN);
+        params.addBodyParameter("api_token", CM_TOKEN);
         LogUtils.e(params.getUri() + new Gson().toJson(params.getQueryStringParams()));
         x.http().post(params, new StringCallback() {
             @Override

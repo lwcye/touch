@@ -38,7 +38,7 @@ public class RWCrashApplication extends Application {
         Utils.init(this);
 
         // TODO: lwc 2018/5/25 改LOG的配置
-        boolean isLog = true;
+        boolean isLog = false;
         LogUtils.getConfig().setLogSwitch(isLog);
         LogUtils.getConfig().setLog2FileSwitch(isLog);
         LogUtils.getConfig().setGlobalTag("cqcity");
