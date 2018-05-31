@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.byid.activity.BrowserActivity;
+import com.byid.model.ApiBean;
 import com.byid.model.ConfigBean;
 import com.byid.model.SyncBean;
 import com.byid.model.UpdateBean;
@@ -37,7 +38,13 @@ public class HttpUtil {
     //更新状态
     public static final String URL_CHANGE_STATUS = "/amain/romstatus";
     //获得配置文件
-    public static final String URL_CONFIG = " ";
+    public static final String URL_CONFIG = "/logintoken/getrooturl";
+    /** 获取该触摸屏的api */
+    private static final String URL_API = "/amain/peizhiinfo";
+    //url 同步数据
+    private static final String URL_SYNC = "/amain/syncinfo";
+    //更新APK
+    private static final String URL_UPDATE_ROM = "/amain/updaterom";
     //config time
     private static final String SP_HOST = "host";
     //config time
@@ -48,28 +55,32 @@ public class HttpUtil {
     private static final String SP_API_URL = "api_url";
     //触摸屏的IP
     private static final String SP_CM_WEB = "cm_web";
+    //触摸屏的TOKEN
+    private static final String SP_CM_TOKEN = "cm_token";
     //Token
-    private static final String TOKEN_KEY = "api_cmtoken";
+    private static final String TOKEN_KEY = "api_token";
     private static final String TOKEN_VALUE = "HBAPI@20180517";
-    //url 同步数据
-    private static final String URL_SYNC = "/amain/syncinfo";
-    //更新APK
-    private static final String URL_UPDATE_ROM = "/amain/updaterom";
+
     private static final HttpUtil ourInstance = new HttpUtil();
+
     //HOST
-    private String HTTP_HOST = "http://223.113.65.26:10080/newswulian/public/api";
-    //API_UTL
+    private String HTTP_HOST = "";
+    //触摸屏的登陆API
     private String API_UTL = "";
-    //CM_WEB
+    //触摸屏的WEB地址
     private String CM_WEB = "";
+    //触摸屏的TOKEN
+    private String CM_TOKEN = "";
     //同步的请求
     private Subscription mSyncObserver;
     //配置的请求
     private Subscription mConfigObserver;
 
     private HttpUtil() {
+        HTTP_HOST = RWCrashApplication.spUtils.getString(SP_HOST, "http://223.113.65.26:10080/newswulian/public/api");
         API_UTL = RWCrashApplication.spUtils.getString(SP_API_URL, "http://125.62.26.233/cqfengjie");
         CM_WEB = RWCrashApplication.spUtils.getString(SP_CM_WEB, "http://125.62.26.233/cqfengjiechumo");
+        CM_TOKEN = RWCrashApplication.spUtils.getString(SP_CM_TOKEN, "HBAPI@20180516fengjie");
     }
 
     public static HttpUtil getInstance() {
@@ -80,7 +91,7 @@ public class HttpUtil {
      * 请求同步
      *
      * @param time 时间
-     * @param b    是否强制更新
+     * @param b 是否强制更新
      */
     public void sync(int time, boolean b) {
         if (mSyncObserver == null) {
@@ -118,7 +129,7 @@ public class HttpUtil {
      * 请求配置参数
      *
      * @param time 间隔时间
-     * @param b    是否强制更新
+     * @param b 是否强制更新
      */
     public void getConfig(int time, boolean b) {
         if (mConfigObserver == null) {
@@ -166,12 +177,6 @@ public class HttpUtil {
                 SyncBean syncBean = new Gson().fromJson(result, SyncBean.class);
                 if (syncBean.status == 1 && syncBean.info.is_update == 1) {
                     requestUpdateRom();
-                }
-                if (syncBean.status == 1 && !TextUtils.isEmpty(syncBean.info.apiurl)) {
-                    RWCrashApplication.spUtils.put(SP_API_URL, syncBean.info.apiurl);
-                }
-                if (syncBean.status == 1 && !TextUtils.isEmpty(syncBean.info.cmweb)) {
-                    RWCrashApplication.spUtils.put(SP_CM_WEB, syncBean.info.cmweb);
                 }
             }
 
@@ -242,6 +247,37 @@ public class HttpUtil {
                     LogUtils.e(b);
                     sync(configBean.info.synctime, b);
                     getConfig(configBean.info.peizhitime, b);
+                    requestApi();
+                }
+            }
+
+            @Override
+            void onFail(Throwable ex) {
+                LogUtils.e(ex.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 获得API
+     */
+    public void requestApi() {
+        RequestParams params = new RequestParams(HTTP_HOST + URL_API);
+        params.addBodyParameter(TOKEN_KEY, TOKEN_VALUE);
+        params.addBodyParameter(MAC_KEY, MAC_VALUE);
+        x.http().post(params, new StringCallback() {
+            @Override
+            void onNext(String result) {
+                LogUtils.d(result);
+                ApiBean apiBean = new Gson().fromJson(result, ApiBean.class);
+                if (apiBean.status == 1 && !TextUtils.isEmpty(apiBean.info.apiurl)) {
+                    RWCrashApplication.spUtils.put(SP_API_URL, apiBean.info.apiurl);
+                }
+                if (apiBean.status == 1 && !TextUtils.isEmpty(apiBean.info.weburl)) {
+                    RWCrashApplication.spUtils.put(SP_CM_WEB, apiBean.info.weburl);
+                }
+                if (apiBean.status == 1 && !TextUtils.isEmpty(apiBean.info.token)) {
+                    RWCrashApplication.spUtils.put(SP_CM_TOKEN, apiBean.info.token);
                 }
             }
 
@@ -266,7 +302,7 @@ public class HttpUtil {
         RequestParams params = new RequestParams(API_UTL + "/public/api/logintoken/login");
         params.addBodyParameter("username", username);
         params.addBodyParameter("password", password);
-        params.addBodyParameter("api_token", "HBAPI@20180516fengjie");
+        params.addBodyParameter(TOKEN_KEY, CM_TOKEN);
         LogUtils.e(params.getUri() + new Gson().toJson(params.getQueryStringParams()));
         x.http().post(params, new StringCallback() {
             @Override
