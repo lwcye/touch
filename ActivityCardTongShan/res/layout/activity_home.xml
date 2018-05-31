@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg"
+    android:orientation="vertical"
+    android:padding="20px">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110px"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5px"
+            android:gravity="center"
+            android:text="阳光铜山村务综合信息公开"
+            android:textColor="@color/white"
+            android:textSize="32px" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="30px"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:text="常见问题"
+            android:textColor="@color/white"
+            android:textSize="18px" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="30px"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:text="系统报警"
+            android:textColor="@color/white"
+            android:textSize="18px" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="30px"
+            android:background="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="50px"
+            android:text="退出"
+            android:textColor="@color/white"
+            android:textSize="18px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_search" />
+
+        <com.byid.custom.AutoScrollView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="450px"
+                    android:layout_height="450px"
+                    android:layout_gravity="center"
+                    android:background="#3000"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btn_home_read"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50px"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_btn"
+                            android:gravity="center"
+                            android:text="身份证扫描"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/btn_home_pwd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50px"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_btn"
+                            android:gravity="center"
+                            android:text="用户登陆"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_home_read"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/iv_read_user_icon"
+                            android:layout_width="60px"
+                            android:layout_height="80px"
+                            android:src="@drawable/face"
+                            android:visibility="gone" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_read"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50px"
+                            android:layout_gravity="center"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="5px"
+                            android:paddingLeft="10px"
+                            android:paddingRight="10px"
+                            android:paddingTop="5px"
+                            android:text="读取二代证卡"
+                            android:textColor="@color/black_3"
+                            android:textSize="18px" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_home_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/et_home_username"
+                            android:layout_width="360px"
+                            android:layout_height="50px"
+                            android:background="@color/white"
+                            android:gravity="center|left"
+                            android:hint="输入用户身份证"
+                            android:padding="5px"
+                            android:textSize="14px" />
+
+                        <EditText
+                            android:id="@+id/et_home_pwd"
+                            android:layout_width="360px"
+                            android:layout_height="50px"
+                            android:layout_marginTop="20px"
+                            android:background="@color/white"
+                            android:gravity="center|left"
+                            android:hint="输入用户密码"
+                            android:inputType="textPassword"
+                            android:padding="5px"
+                            android:textSize="14px" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_login"
+                            android:layout_width="300px"
+                            android:layout_height="50px"
+                            android:layout_marginTop="20px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="登陆"
+                            android:textColor="@color/black_3" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="20px"
+                        android:text="如果您在登录过程中遇到密码框无法输入或页面异常错误，请拨打电话 13455795325。"
+                        android:textColor="@color/white"
+                        android:textSize="14px" />
+                </LinearLayout>
+            </FrameLayout>
+        </com.byid.custom.AutoScrollView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_home_com"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10px"
+        android:text="版权所有 重庆汇博利农科技有限公司"
+        android:textColor="@color/white"
+        android:textSize="18px" />
+</LinearLayout>

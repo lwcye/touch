@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    // 工具
+    compile 'com.blankj:utilcode:1.14.2'
+    // 保活
+    compile 'com.xdandroid:hellodaemon:+'
+    //RxJava
+    compile 'io.reactivex:rxjava:1.2.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    //Xutils
+    compile 'org.xutils:xutils:3.5.0'
+    //浏览器
+    compile 'com.tencent.sonic:sdk:3.0.0'
+    compile 'com.github.lzyzsd:jsbridge:1.0.4'
+    // 文件下载(file downloader)
+    compile 'com.liulishuo.filedownloader:library:1.4.1'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile project(':m2ON_OFF_DEMO')
+    compile files('libs/tbs_sdk_thirdapp_v3.6.0.1234_43608_sharewithdownload_withoutGame_obfs_20180510_111111.jar')
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    // 编译参数配置
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 19
+        versionCode 5
+        versionName "1.0.4"
+        jackOptions {
+            enabled true
+        }
+        // ndk平台选项
+        ndk {
+            "armeabi-v7a"
+        }
+        // 打包资源种类配置
+        resConfigs "zh-rCN", "zh-rHK", "zh-rTW", "en"
+
+        compileOptions {
+            targetCompatibility 1.8
+            sourceCompatibility 1.8
+        }
+        // 单元测试
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            jniLibs.srcDir 'libs'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

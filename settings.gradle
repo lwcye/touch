@@ -1,2 +1,2 @@
-include ':app', ':X5WebDemo', ':VasSonic', ':ActivityCard'
+include ':app', ':X5WebDemo', ':VasSonic', ':ActivityCard', ':ActivityCardTongShan'
 include ':m2ON_OFF_DEMO'
