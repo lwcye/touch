@@ -78,9 +78,9 @@ public class HttpUtil {
 
     private HttpUtil() {
         HTTP_HOST = RWCrashApplication.spUtils.getString(SP_HOST, "http://223.113.65.26:10080/newswulian/public/api");
-        API_UTL = RWCrashApplication.spUtils.getString(SP_API_URL, "http://223.113.65.26:8088/tongshanchumo");
-        CM_WEB = RWCrashApplication.spUtils.getString(SP_CM_WEB, "http://125.62.26.233/cqfengjiechumo");
-        CM_TOKEN = RWCrashApplication.spUtils.getString(SP_CM_TOKEN, "HBAPI@20180516fengjie");
+        API_UTL = RWCrashApplication.spUtils.getString(SP_API_URL, "http://223.113.65.26:8088/tongshanweb");
+        CM_WEB = RWCrashApplication.spUtils.getString(SP_CM_WEB, "http://125.62.26.233/tongshanweb");
+        CM_TOKEN = RWCrashApplication.spUtils.getString(SP_CM_TOKEN, "HBAPI@20180310tongshanweb");
     }
 
     public static HttpUtil getInstance() {

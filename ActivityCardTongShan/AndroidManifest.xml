@@ -20,6 +20,7 @@
     <application
         android:name=".base.RWCrashApplication"
         android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher_tongshan"
         android:theme="@style/AppTheme">
         <receiver android:name=".recevier.BootReceiver">
             <intent-filter>

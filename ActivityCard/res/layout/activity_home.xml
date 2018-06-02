@@ -13,7 +13,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="85px"
+            android:drawableLeft="@drawable/ic_launcher"
             android:drawablePadding="5px"
             android:gravity="center"
             android:text="奉节村务公开"
